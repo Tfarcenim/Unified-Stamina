@@ -1,10 +1,13 @@
 package tfar.unifiedstamina;
 
+import net.minecraft.resources.ResourceLocation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import tfar.unifiedstamina.platform.Services;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.world.item.Items;
+
+import java.util.UUID;
 
 // This class is part of the common project meaning it is shared between all supported loaders. Code written here can only
 // import and access the vanilla codebase, libraries used by vanilla, and optionally third party libraries that provide
@@ -25,5 +28,24 @@ public class UnifiedStamina {
         // your own abstraction layer. You can learn more about this in our provided services class. In this example
         // we have an interface in the common code and use a loader specific implementation to delegate our call to
         // the platform specific approach.
+    }
+
+    // adapted from String.hashCode()
+    public static long hash(String string) {
+        long h = 1125899906842597L; // prime
+        int len = string.length();
+
+        for (int i = 0; i < len; i++) {
+            h = 31*h + string.charAt(i);
+        }
+        return h;
+    }
+
+    public static UUID fromResourceLocation(ResourceLocation resourceLocation) {
+        return new UUID(hash(resourceLocation.getNamespace()), hash(resourceLocation.getPath()));
+    }
+
+    public static ResourceLocation id(String path) {
+        return new ResourceLocation(MOD_ID,path);
     }
 }

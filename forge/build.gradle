@@ -29,7 +29,8 @@ legacyForge {
         }
         data {
             data()
-            programArguments.addAll '--mod', project.mod_id, '--all', '--output', file('src/generated/resources/').getAbsolutePath(), '--existing', file('src/main/resources/').getAbsolutePath()
+            programArguments.addAll '--mod', project.mod_id, '--all', '--output', rootProject.project(':common').file('src/generated/resources/').getAbsolutePath(),
+                    '--existing', rootProject.project(':common').file('src/main/resources/').getAbsolutePath()
         }
         server {
             server()
@@ -55,6 +56,10 @@ dependencies {
 
     modImplementation("curse.maven:apothic-attributes-898963:5340012")
     modImplementation("curse.maven:combat-roll-678036:5625925")
+
+    modImplementation("curse.maven:playeranimator-658587:4587214")
+    modImplementation("curse.maven:cloth-config-348521:5729105")
+    modImplementation("curse.maven:placebo-283644:6274231")
 }
 
 jar {
