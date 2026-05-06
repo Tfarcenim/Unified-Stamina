@@ -43,9 +43,18 @@ legacyForge {
     }
 }
 
+repositories{
+    maven {
+        url "https://cursemaven.com"
+    }
+}
+
 dependencies {
     compileOnly project(":common")
     annotationProcessor("org.spongepowered:mixin:0.8.5-SNAPSHOT:processor")
+
+    modImplementation("curse.maven:apothic-attributes-898963:5340012")
+    modImplementation("curse.maven:combat-roll-678036:5625925")
 }
 
 jar {
