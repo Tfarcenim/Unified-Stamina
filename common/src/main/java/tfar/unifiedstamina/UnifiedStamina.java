@@ -1,6 +1,9 @@
 package tfar.unifiedstamina;
 
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.MinecraftServer;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.server.network.ServerGamePacketListenerImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import tfar.unifiedstamina.platform.Services;
@@ -47,5 +50,9 @@ public class UnifiedStamina {
 
     public static ResourceLocation id(String path) {
         return new ResourceLocation(MOD_ID,path);
+    }
+
+    public static void onRollPublish(ServerGamePacketListenerImpl handler, ServerPlayer player, MinecraftServer server) {
+
     }
 }

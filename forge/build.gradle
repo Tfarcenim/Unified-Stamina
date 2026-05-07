@@ -60,6 +60,10 @@ dependencies {
     modImplementation("curse.maven:playeranimator-658587:4587214")
     modImplementation("curse.maven:cloth-config-348521:5729105")
     modImplementation("curse.maven:placebo-283644:6274231")
+
+    modImplementation("curse.maven:paragliders-289240:5046069")
+
+    modImplementation("curse.maven:better-paragliders-895261:5805065")
 }
 
 jar {

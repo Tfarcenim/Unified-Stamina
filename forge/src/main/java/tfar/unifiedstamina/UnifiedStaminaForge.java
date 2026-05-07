@@ -1,6 +1,7 @@
 package tfar.unifiedstamina;
 
 import dev.shadowsoffire.attributeslib.api.ALObjects;
+import net.combatroll.api.event.ServerSideRollEvents;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffects;
@@ -14,11 +15,16 @@ import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.registries.RegisterEvent;
 import tfar.unifiedstamina.datagen.USDatagen;
+import tictim.paraglider.api.movement.Movement;
+import tictim.paraglider.api.stamina.Stamina;
+import tictim.paraglider.impl.movement.ServerPlayerMovement;
 
 import java.util.UUID;
 
 @Mod(UnifiedStamina.MOD_ID)
 public class UnifiedStaminaForge {
+
+    public static final int ROLL_STAMINA = 250;
     
     public UnifiedStaminaForge() {
         IEventBus bus = FMLJavaModLoadingContext.get().getModEventBus();
@@ -32,6 +38,14 @@ public class UnifiedStaminaForge {
     
         // Use Forge to bootstrap the Common mod.
         UnifiedStamina.init();
+        ServerSideRollEvents.PLAYER_START_ROLLING.register((serverPlayer, vec3) -> {
+            Stamina.get(serverPlayer).takeStamina(ROLL_STAMINA,false,false);//(int amount, boolean simulate, boolean ignoreDepletion)
+            Movement movement = Movement.get(serverPlayer);
+            movement.setRecoveryDelay(movement.state().recoveryDelay());
+            if (movement instanceof ServerPlayerMovement serverPlayerMovement) {
+                serverPlayerMovement.markStaminaVesselChanged();
+            }
+        });
         
     }
 
