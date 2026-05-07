@@ -41,7 +41,7 @@ public class UnifiedStaminaForge {
         ServerSideRollEvents.PLAYER_START_ROLLING.register((serverPlayer, vec3) -> {
             Stamina.get(serverPlayer).takeStamina(ROLL_STAMINA,false,false);//(int amount, boolean simulate, boolean ignoreDepletion)
             Movement movement = Movement.get(serverPlayer);
-            movement.setRecoveryDelay(movement.state().recoveryDelay());
+            movement.setRecoveryDelay(15);
             if (movement instanceof ServerPlayerMovement serverPlayerMovement) {
                 serverPlayerMovement.markStaminaVesselChanged();
             }
@@ -55,7 +55,7 @@ public class UnifiedStaminaForge {
 
     void setup(FMLCommonSetupEvent event) {
         MobEffects.DAMAGE_BOOST.addAttributeModifier(USAttributes.STRENGTH,
-                UnifiedStamina.fromResourceLocation(UnifiedStamina.id("strength_boost")).toString(),.2, AttributeModifier.Operation.ADDITION);
+                UnifiedStamina.STRENGTH_UUID.toString(),.2, AttributeModifier.Operation.ADDITION);
     }
 
     void register(RegisterEvent event) {

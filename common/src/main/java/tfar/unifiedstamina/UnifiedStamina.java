@@ -44,6 +44,8 @@ public class UnifiedStamina {
         return h;
     }
 
+    public static final UUID STRENGTH_UUID = UnifiedStamina.fromResourceLocation(UnifiedStamina.id("strength_boost"));
+
     public static UUID fromResourceLocation(ResourceLocation resourceLocation) {
         return new UUID(hash(resourceLocation.getNamespace()), hash(resourceLocation.getPath()));
     }
