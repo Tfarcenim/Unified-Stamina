@@ -1,13 +1,14 @@
 package tfar.unifiedstamina;
 
-import dev.shadowsoffire.attributeslib.api.ALObjects;
 import net.combatroll.api.event.ServerSideRollEvents;
+import net.combatroll.internals.RollManager;
 import net.minecraft.core.registries.Registries;
-import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
-import net.minecraftforge.event.entity.EntityAttributeCreationEvent;
+import net.minecraft.world.entity.player.Player;
+import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.EntityAttributeModificationEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.common.Mod;
@@ -15,17 +16,12 @@ import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.registries.RegisterEvent;
 import tfar.unifiedstamina.datagen.USDatagen;
-import tictim.paraglider.api.movement.Movement;
 import tictim.paraglider.api.stamina.Stamina;
-import tictim.paraglider.impl.movement.ServerPlayerMovement;
-
-import java.util.UUID;
 
 @Mod(UnifiedStamina.MOD_ID)
 public class UnifiedStaminaForge {
 
-    public static final int ROLL_STAMINA = 250;
-    
+
     public UnifiedStaminaForge() {
         IEventBus bus = FMLJavaModLoadingContext.get().getModEventBus();
         bus.addListener(this::register);
@@ -39,14 +35,28 @@ public class UnifiedStaminaForge {
         // Use Forge to bootstrap the Common mod.
         UnifiedStamina.init();
         ServerSideRollEvents.PLAYER_START_ROLLING.register((serverPlayer, vec3) -> {
-            Stamina.get(serverPlayer).takeStamina(ROLL_STAMINA,false,false);//(int amount, boolean simulate, boolean ignoreDepletion)
+
+            ((USPlayerDuck)serverPlayer).markAsRolling();
+
+            /*Stamina.get(serverPlayer).takeStamina(ROLL_STAMINA,false,false);//(int amount, boolean simulate, boolean ignoreDepletion)
             Movement movement = Movement.get(serverPlayer);
             movement.setRecoveryDelay(15);
             if (movement instanceof ServerPlayerMovement serverPlayerMovement) {
                 serverPlayerMovement.markStaminaVesselChanged();
-            }
+            }*/
         });
-        
+        MinecraftForge.EVENT_BUS.addListener(this::playerTick);
+    }
+
+    public static boolean checkExtraConditions(Player player){
+        return Stamina.get(player).stamina() >= RollManager.rollDuration()*30
+                && !Stamina.get(player).isDepleted();
+    }
+
+    void playerTick(TickEvent.PlayerTickEvent event) {
+        if (event.phase == TickEvent.Phase.START) {
+            ((USPlayerDuck)event.player).update();
+        }
     }
 
     void addAttributes(EntityAttributeModificationEvent event) {

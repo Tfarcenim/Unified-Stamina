@@ -1,6 +1,5 @@
 package tfar.unifiedstamina.mixin;
 
-import net.combatroll.api.EntityAttributes_CombatRoll;
 import net.combatroll.internals.RollManager;
 import net.combatroll.mixin.PlayerEntityAccessor;
 import net.minecraft.client.player.LocalPlayer;
@@ -34,6 +33,11 @@ public abstract class RollManagerMixin {
     @Shadow
     private int currentCooldownLength;
 
+    @Shadow
+    public static int rollDuration() {
+        throw new UnsupportedOperationException("Implemented via mixin");
+    }
+
     /**
      * @author
      * @reason
@@ -62,11 +66,12 @@ public abstract class RollManagerMixin {
      * @author
      * @reason
      */
+    @SuppressWarnings("ConstantConditions")
     @Overwrite(remap = false)
     public boolean isRollAvailable(Player player) {
         return this.isEnabled && !this.isRolling() && /*this.availableRolls > 0 &&*/
                 !((PlayerEntityAccessor)player).invokeIsImmobile_CombatRoll() && player.isEffectiveAi() && player.getAttributeValue(Attributes.MOVEMENT_SPEED) > (double)0.0F &&
-                Stamina.get(player).stamina() >= UnifiedStaminaForge.ROLL_STAMINA;//the change
+                UnifiedStaminaForge.checkExtraConditions(player) && this.timeSinceLastRoll >= this.currentCooldownLength;//the change
     }
 
     /**
