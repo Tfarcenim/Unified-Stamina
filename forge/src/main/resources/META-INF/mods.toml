@@ -24,3 +24,9 @@ mandatory = true
 versionRange = "${minecraft_version_range}"
 ordering = "NONE"
 side = "BOTH"
+[[dependencies.${mod_id}]]
+modId = "paraglider"
+mandatory = true
+versionRange = "[20,)"
+ordering = "NONE"
+side = "BOTH"

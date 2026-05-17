@@ -1,19 +1,30 @@
 package tfar.unifiedstamina;
 
+import fuzs.swordblockingmechanics.init.ModRegistry;
 import net.combatroll.api.event.ServerSideRollEvents;
 import net.combatroll.internals.RollManager;
+import net.minecraft.core.particles.ParticleOptions;
+import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.core.registries.Registries;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.effect.MobEffects;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.EntityAttributeModificationEvent;
+import net.minecraftforge.event.entity.living.LivingAttackEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
+import net.minecraftforge.fml.loading.FMLEnvironment;
 import net.minecraftforge.registries.RegisterEvent;
 import tfar.unifiedstamina.datagen.USDatagen;
 import tictim.paraglider.api.stamina.Stamina;
@@ -45,8 +56,14 @@ public class UnifiedStaminaForge {
                 serverPlayerMovement.markStaminaVesselChanged();
             }*/
         });
+
+        if (FMLEnvironment.dist.isClient()) {
+            USClientForge.init(bus);
+        }
+
         MinecraftForge.EVENT_BUS.addListener(this::playerTick);
     }
+
 
     public static boolean checkExtraConditions(Player player){
         return Stamina.get(player).stamina() >= RollManager.rollDuration()*30

@@ -9,6 +9,8 @@ import tfar.unifiedstamina.USPlayerDuck;
 public class PlayerMixin implements USPlayerDuck {
 
     int rollTimer;
+    int superParryTimer;
+    boolean superParrySuccessful;
 
     @Override
     public void markAsRolling() {
@@ -23,5 +25,26 @@ public class PlayerMixin implements USPlayerDuck {
     @Override
     public void update() {
         if (rollTimer > 0) {rollTimer--;}
+        if (superParryTimer > 0) {superParryTimer--;}
+    }
+
+    @Override
+    public boolean isSuperParrying() {
+        return superParryTimer>0;
+    }
+
+    @Override
+    public boolean superParrySuccessful() {
+        return superParrySuccessful;
+    }
+
+    @Override
+    public void markSuperParrySuccessful(boolean superParrySuccessful) {
+        this.superParrySuccessful = superParrySuccessful;
+    }
+
+    @Override
+    public void markSuperParrying() {
+        superParryTimer = 5;
     }
 }

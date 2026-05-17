@@ -65,10 +65,25 @@ dependencies {
 
     modImplementation("curse.maven:better-paragliders-895261:5805065")
 
+    modImplementation("curse.maven:sword-blocking-mechanics-969424:6043941")
+
     modImplementation("maven.modrinth:better-combat:${project.better_combat_version}-forge")
+    modImplementation("curse.maven:puzzles-lib-495476:6918565")
+
+    modImplementation("curse.maven:terramity-1084134:6054971")
+
     // Better Combat Dependencies
     implementation(annotationProcessor("io.github.llamalad7:mixinextras-common:${project.mixin_extras_version}"))
     implementation(jarJar("io.github.llamalad7:mixinextras-forge:${project.mixin_extras_version}"))
+
+
+    // Compile against only the API artifact
+    modCompileOnly("top.theillusivec4.curios:curios-forge:${curios_version}:api")
+    // Use the full Curios API jar at runtime
+    modRuntimeOnly("top.theillusivec4.curios:curios-forge:${curios_version}")
+
+    modImplementation("software.bernie.geckolib:geckolib-forge-$minecraft_version:$geckolib")
+
 }
 
 jar {

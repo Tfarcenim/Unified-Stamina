@@ -62,6 +62,10 @@ repositories {
             includeGroup("com.eliotlash.mclib")
         }
     }
+    maven {
+        name = "Illusive Soulworks maven"
+        url = "https://maven.theillusivec4.top/"
+    }
 }
 
 // Declare capabilities on the outgoing configurations.
