@@ -9,11 +9,11 @@
     "CalculateStaminaUtilsMixin",
     "PlayerMixin",
     "RollManagerMixin",
-    "ServerNetworkMixin",
     "swordblockingmechanics.SwordBlockingHandlerMixin"
   ],
   "client": [
     "HudRenderHelperMixin",
+    "RollManagerMixinClient",
     "MinecraftMixin"
   ],
   "server": [
